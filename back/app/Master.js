@@ -10,35 +10,47 @@ exports.creationMaster = function (db, k, traitement){
     return monMaster;
 };
 
-master = function ( db, id, code) {
+master = function ( db, id, traitement) {
 
     this.id = id;
     this.tabDonneeTmp = [];
-    this.nombreCP = this.tabDonneeTmp.length;
+    this.donnerCP = {};
+    this.donnerCP.traitement = traitement;
+    this.nombreCP;
     this.traitementFini = false;
-    this.construction = 0;
 };
 
 master.prototype = {
 
     creationCP : function () {
+        var _this = this;
+        var tmpCPNbr = 0;
+        console.log("Creation du Master1");
+        this.nombreCP = this.tabDonneeTmp.length;
         for(var i=0; i<this.tabDonneeTmp.length; i++) {
-            var a=2;
-            var tmpCPNbr = 0;
-            var ls = process.fork("./app/process.js", a);
-            ls.send(this.tableau[i]);
-           // ls.send(this.tableau.donnees[i]));
-            ls.on ('message', function (m){
-                    this.tabDonneeTmp.push(m);
-                    tmpCPNbr++;
-                    console.log(this.tabDonneeTmp);
+
+            var ls = process.fork("./process.js");
+            this.donnerCP.donnees =this.tabDonneeTmp[i];
+            this.donnerCP.idCP=i;
+            ls.send(_this.donnerCP);
+
+           ls.on ('message', function (m){
+               //this.tabDonneeTmp.push(m);
+               console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+               //console.log(m);
+               //console.log("C'est fini pour le child process "+_this.donnerCP.idCP);
+               tmpCPNbr++;
+               if(tmpCPNbr == _this.nombreCP){
+                   console.log(">>>>>>>>>>>>>>>>>>>>>>Je suis dans la condition<<<<<<<<<<<<<<<<<<<<<")
+                   _this.traitementFini = true;
+               }
+
             });
+
             ls.on('close', function (code) {
                 console.log('child process exited with code ' + code);
             });
-            if(tmpCPNbr == this.nombreCP){
-                this.traitementFini = true;
-            }
+
 
         }
 

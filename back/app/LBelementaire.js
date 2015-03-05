@@ -11,8 +11,6 @@ var master = require('./Master');
 var demande = require("./requettes");
 
 
-
-
 demande.start({code : "P2T"});
 
 console.log("===================================================================================================================");
@@ -30,22 +28,19 @@ LBelem = function ( nbMaster,resp) {
     this.tabMasterP2 = [];
     this.nombreMasterLance = 0;
     this.nbMaster = nbMaster;
-    console.log(this.tabMasterP2.length);
+
     for (k = 0; k < this.nbMaster; k++) {
         this.tableauTraitement[k] = resp.traitement[k];
         this.tabMasterP2[k] = master.creationMaster(resp.db, k, resp.traitement[k]);
-        //console.log(this.tabMasterP2);
+        console.log("<<<<<<<<<<<<<<<<<<<<<  Creation du Master numero "+k+  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     }
-
     this.initialisationDonneeProcess("P2");
-   // console.log(this.tabMasterP2);
-
 };
 
 LBelem.prototype = {
 
     initialisationDonneeProcess : function(process){
-        console.log("Initialisation LB++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process en question >>>>>>>>>>>>>>>>>>>>>>>");
         var _this = this;
         if (process == "P2") {
 
@@ -57,13 +52,15 @@ LBelem.prototype = {
                     tab[i] = tmpJson[i];
                 }
                 _this.tabMasterP2[0].tabDonneeTmp=tab;
-                //console.log(_this.tabMasterP2);
+                bob();
             });
-            if(_this.tabMasterP2[0].construction==1){
-                console.log("++++++++++++++++++++++++++++++++++++++++++++");
-                this.tabMasterP2[0].tabDonneeTmp=_this.tabMasterP2[0].tabDonneeTmp;
-                console.log(this.tabMasterP2);
+
+            function bob() {
+
+                console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                _this.gestionProcess();
             }
+
 
         }else{
            // TODO les autres process
@@ -72,27 +69,30 @@ LBelem.prototype = {
     },
 
     gestionProcess : function () {
-        if(this.nombreMasterLance == 0){
-            this.tabMasterP2[this.nombreMasterLance].creationCP();
-            this.nombreMasterLance++;
-            console.log("_____________________________Fin Traitement 1 _____________________________");
-            console.log(this.tabMasterP2[0].tabDonneeTmp);
-        }
-        if (this.tabMasterP2[(this.nombreMasterLance)-1].traitementFini == true){
-            this.tabMasterP2[this.nombreMasterLance].creationCP();
-            this.nombreMasterLance++;
-            console.log("_____________________________Fin Traitement 2 _____________________________");
-            console.log(this.tabMasterP2[1].tabDonneeTmp);
-        }
-        if (this.tabMasterP2[(this.nombreMasterLance)-1].traitementFini == true){
-            this.tabMasterP2[this.nombreMasterLance].creationCP();
-            this.nombreMasterLance++;
-            console.log("_____________________________Fin Traitement 3 _____________________________");
-            console.log(this.tabMasterP2[2].tabDonneeTmp);
-        }
-        this.gestionProcess();
-    }
+       // console.log(this.tabMasterP2[0].tabDonneeTmp);
+         this.tabMasterP2[0].creationCP();
+         //this.nombreMasterLance++;
 
+        if(this.tabMasterP2[0].traitementFini == true){
+            console.log("_____________________________Fin Traitement 1 _____________________________");
+        }
+
+        // console.log(this.tabMasterP2[0].tabDonneeTmp);
+
+/*         if (this.tabMasterP2[(this.nombreMasterLance)-1].traitementFini == true){
+         this.tabMasterP2[this.nombreMasterLance].creationCP();
+         this.nombreMasterLance++;
+         console.log("_____________________________Fin Traitement 2 _____________________________");
+         console.log(this.tabMasterP2[1].tabDonneeTmp);
+         }
+         if (this.tabMasterP2[(this.nombreMasterLance)-1].traitementFini == true){
+         this.tabMasterP2[this.nombreMasterLance].creationCP();
+         this.nombreMasterLance++;
+         console.log("_____________________________Fin Traitement 3 _____________________________");
+         console.log(this.tabMasterP2[2].tabDonneeTmp);
+         }*/
+         //this.gestionProcess();
+         }
 
 };
 

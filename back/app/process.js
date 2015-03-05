@@ -5,8 +5,7 @@
 
 process.on('message', function(resp) {
     console.log("Creation du child process numero"+resp.idCP);
-    resp.code = resp.code.replace("@ARemplacer", "resp.donnees");
-    eval(resp.code);
-    //console.log(resp.donnees);
+    resp.traitement = resp.traitement.replace(/@ARemplacer/g, "resp.donnees");
+    eval(resp.traitement);
     process.send(resp.donnees);
 });
