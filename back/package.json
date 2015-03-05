@@ -1,0 +1,7 @@
+{
+  "name": "web_server",
+  "version": "0.0.1",
+  "dependencies": {
+    "mongoose": "^3.8.22"
+  }
+}
