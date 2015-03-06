@@ -4,8 +4,12 @@
 
 
 process.on('message', function(resp) {
+    //console.log(resp.donnees);
+    var donnee = resp.donnees;
     console.log("Creation du child process numero"+resp.idCP);
-    resp.traitement = resp.traitement.replace(/@ARemplacer/g, "resp.donnees");
+    resp.traitement = resp.traitement.replace(/@ARemplacer/g, "donnee");
+
     eval(resp.traitement);
-    process.send(resp.donnees);
+    //console.log(donnee.motDuTT);
+    process.send(donnee);
 });

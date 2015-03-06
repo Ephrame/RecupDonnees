@@ -40,10 +40,12 @@ LBelem = function ( nbMaster,resp) {
 LBelem.prototype = {
 
     initialisationDonneeProcess : function(process){
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process en question >>>>>>>>>>>>>>>>>>>>>>>");
-        var _this = this;
-        if (process == "P2") {
 
+        var _this = this;
+        // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        if (process == "P2") {
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 2 >>>>>>>>>>>>>>>>>>>>>>>");
+            // Todo Appeler les db du meme nom que les process !
             var db = require('./twitter');
 
             db.trouverTout(function (tmpJson) {
@@ -52,14 +54,36 @@ LBelem.prototype = {
                     tab[i] = tmpJson[i];
                 }
                 _this.tabMasterP2[0].tabDonneeTmp=tab;
-                bob();
+                cb();
             });
 
-            function bob() {
+            function cb() {
 
                 console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                 _this.gestionProcess();
             }
+        // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        if (prcess == "P1")    {
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 1 >>>>>>>>>>>>>>>>>>>>>>>");
+            //todo faire une base sale twiiter et des process nul ? ou faire des process de recuperation specifiquemenet
+            var db = require('./twitter');
+
+        }
+        // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        if (prcess == "P3")    {
+        // todo : base sale pour aller en base propre
+            // todo : recuperer les articles par api. --> parrallèle.
+        var db = require('./articles');
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 3 >>>>>>>>>>>>>>>>>>>>>>>");
+        }
+       // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        if (prcess == "P4")    {
+            // todo : base sale pour aller en base propre
+            var db = require('./articles');
+            var db2 = require('./twitter');
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 3 >>>>>>>>>>>>>>>>>>>>>>>");
+        }
+
 
 
         }else{
@@ -69,13 +93,26 @@ LBelem.prototype = {
     },
 
     gestionProcess : function () {
+        var _this=this;
+
+        var numeroProcess = 0;
        // console.log(this.tabMasterP2[0].tabDonneeTmp);
-         this.tabMasterP2[0].creationCP();
+        this.tabMasterP2[0].creationCP();
          //this.nombreMasterLance++;
 
-        if(this.tabMasterP2[0].traitementFini == true){
-            console.log("_____________________________Fin Traitement 1 _____________________________");
-        }
+        master.ev.on("FinMaster", function () {
+            numeroProcess++;
+            if (numeroProcess < _this.nbMaster) {
+                console.log("Je suis dans l'evenement ********************************************************");
+                _this.tabMasterP2[numeroProcess].tabDonneeTmp = _this.tabMasterP2[numeroProcess - 1].tabDonneeTmpSortie;
+                _this.tabMasterP2[numeroProcess].creationCP();
+                if(numeroProcess == 2){
+                    db.miseAJour(_this.tabMasterP2[numeroProcess].tabDonneeTmp);
+                }
+
+            }
+
+        });
 
         // console.log(this.tabMasterP2[0].tabDonneeTmp);
 
