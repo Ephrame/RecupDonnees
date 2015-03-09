@@ -57,19 +57,19 @@ server.miseEnForme = function (flux) {
         tmp.lien = flux.query.results.item[i].link;
         articles[i] = tmp;
         //demande.p
-        //db.sauvegarder(tmp);
+        db.sauvegarder(tmp);
     }
 };
 
 // Lancement de la récupération d'articles, avec evenement lorsque c'est fini.
 var start = function () {
-    setInterval(function () {
-     //   server.get(server.api.lepoint, "Le point");
+   // setInterval(function () {
+        server.get(server.api.lepoint, "Le point");
         server.get(server.api.leParisien, "Le Parisien");
-      //  server.get(server.api.lemonde);
-     //   server.get(server.api.yahoo_culture_medias, "Les medias");
-       // server.get(server.api.yahoo_culture_people, "Les peoples");
-        //server.get(server.api.yahoo_culture_sport, "Le sport");
+        server.get(server.api.lemonde);
+        server.get(server.api.yahoo_culture_medias, "Les medias");
+        server.get(server.api.yahoo_culture_people, "Les peoples");
+        server.get(server.api.yahoo_culture_sport, "Le sport");
 /*		setInterval(function () {
 		console.log("+++++++++++++++++++++++Evenement : Fin articles ++++++++++++++++++++++++++++++++");
 
@@ -77,7 +77,7 @@ var start = function () {
             exports.ev2 = new EventEmitter();
 		}, date.minute);*/
 
-    }, date.minute)
+   // }, date.minute)
 	// ********************************** Suppression toutes les semaines ********************************************************
 	setInterval(function () {
     db.supprimer();

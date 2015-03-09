@@ -11,7 +11,8 @@ var master = require('./Master');
 var demande = require("./requettes");
 
 
-demande.start({code : "P2T"});
+//demande.start({code : "P2T"});
+demande.start({code : "P4T"});
 
 console.log("===================================================================================================================");
 
@@ -34,7 +35,7 @@ LBelem = function ( nbMaster,resp) {
         this.tabMasterP2[k] = master.creationMaster(resp.db, k, resp.traitement[k]);
         console.log("<<<<<<<<<<<<<<<<<<<<<  Creation du Master numero "+k+  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     }
-    this.initialisationDonneeProcess("P2");
+    this.initialisationDonneeProcess("P4");
 };
 
 LBelem.prototype = {
@@ -53,7 +54,7 @@ LBelem.prototype = {
                 for (i in tmpJson) {
                     tab[i] = tmpJson[i];
                 }
-                _this.tabMasterP2[0].tabDonneeTmp=tab;
+                _this.tabMasterP2[0].tabDonneeTmp = tab;
                 cb();
             });
 
@@ -62,31 +63,42 @@ LBelem.prototype = {
                 console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                 _this.gestionProcess();
             }
+        }
         // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        if (prcess == "P1")    {
+        else if (process == "P1")    {
             console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 1 >>>>>>>>>>>>>>>>>>>>>>>");
             //todo faire une base sale twiiter et des process nul ? ou faire des process de recuperation specifiquemenet
             var db = require('./twitter');
 
         }
         // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        if (prcess == "P3")    {
-        // todo : base sale pour aller en base propre
-            // todo : recuperer les articles par api. --> parrallèle.
-        var db = require('./articles');
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 3 >>>>>>>>>>>>>>>>>>>>>>>");
-        }
-       // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        if (prcess == "P4")    {
+        else if (process == "P3")    {
             // todo : base sale pour aller en base propre
+            // todo : recuperer les articles par api. --> parrallèle.
             var db = require('./articles');
-            var db2 = require('./twitter');
             console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 3 >>>>>>>>>>>>>>>>>>>>>>>");
         }
+       // <<<<<<<<<<<<<<<<<<<<<<<< Pour le Process 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        else if (process == "P4")    {
+            console.log("Je suis dans P4");
+            // todo : base sale pour aller en base propre
+            var twitter = require('./twitter');
+            twitter.trouverTout(function (tmpJson) {
+                var tab = [];
+                for (i in tmpJson) {
+                    tab[i] = tmpJson[i];
+                }
+                _this.tabMasterP2[0].tabDonneeTmp=tab;
+                cb();
+                function cb() {
 
-
-
-        }else{
+                    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                    _this.gestionProcess();
+                }
+            });
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>> Initialisation des donnees du master 1 du process 3 >>>>>>>>>>>>>>>>>>>>>>>");
+        }
+        else{
            // TODO les autres process
         }
 
@@ -102,14 +114,13 @@ LBelem.prototype = {
 
         master.ev.on("FinMaster", function () {
             numeroProcess++;
+
             if (numeroProcess < _this.nbMaster) {
                 console.log("Je suis dans l'evenement ********************************************************");
                 _this.tabMasterP2[numeroProcess].tabDonneeTmp = _this.tabMasterP2[numeroProcess - 1].tabDonneeTmpSortie;
                 _this.tabMasterP2[numeroProcess].creationCP();
-                if(numeroProcess == 2){
-                    db.miseAJour(_this.tabMasterP2[numeroProcess].tabDonneeTmp);
-                }
-
+            }else{
+                console.log( "++++++++++++++++++++"+numeroProcess+"++++++++++++++++++++++++++");
             }
 
         });

@@ -2,7 +2,7 @@ var fs = require('fs');
 var timeout_time  = 60000; //nombre de millisecondes dans une heure
 var https = require('https') ;
 var OAuth2 = require('oauth').OAuth2;
-//var db = require('./twitter');
+var db = require('./twitter');
 
 var date = {};
 date.heure = 60000;
@@ -103,7 +103,7 @@ donnee.getTweets = function(new_tt){
 //lancement toutes les heures du rafraichement des trending topics 
 //setInterval(function () {
 
-// donnee.autorisationConnextion();
+//donnee.autorisationConnextion();
 //}, date.heure);
 //db.supprimerTout();
 //start();

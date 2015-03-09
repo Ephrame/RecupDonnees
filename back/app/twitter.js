@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');//mongoose
 
 var connection = function () {
-    console.log("Je suis dans la base Twitter ======================================");
+   console.log("Je suis dans la base Twitter ======================================");
     if (mongoose.connection.readyState == 0) {
         mongoose.connect('mongodb://localhost/twitter', function (err) {
             if (err) {

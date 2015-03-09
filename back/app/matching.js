@@ -71,7 +71,7 @@ traitements.preMatching = function (trend, tabArticle) {
         console.log("J'ai trouvé un matching");
         traitements.tweetsArticles.tabArticles = tabBonArticles;
         //console.log(traitements.tweetsArticles.nom);
-       tweetsArticles.sauvegarderOuMAJ(traitements.tweetsArticles);
+      // tweetsArticles.sauvegarderOuMAJ(traitements.tweetsArticles);
 
     }
 };
@@ -116,7 +116,7 @@ traitements.matching = function (trend, tabArticle, tabBonArticles) {
  });*/
 
 
-setInterval(function () {
+//setInterval(function () {
     traitements.start();
-}, date.heure);
+//}, date.heure);
 

@@ -10,6 +10,15 @@ process.on('message', function(resp) {
     resp.traitement = resp.traitement.replace(/@ARemplacer/g, "donnee");
 
     eval(resp.traitement);
+    envoyer(donnee);
+
+
+    //console.log(donnee.TT.motsClefs);
     //console.log(donnee.motDuTT);
-    process.send(donnee);
+
+
 });
+
+var envoyer = function (donnee){
+    process.send(donnee);
+}

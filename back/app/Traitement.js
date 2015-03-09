@@ -12,7 +12,7 @@ traitement.tabJsonMotPoids = [];
 traitement.NewTabJsonMotPoids = [];
 
 //lancement du programme
-exports.start = function (tmpJson) {
+traitement.start = function (tmpJson) {
     traitement.recupTweets();
 
 };
@@ -126,7 +126,7 @@ traitement.enregistreHas = function (motsTpm, valeur, num) {
     traitement.NewTabJsonMotPoids = JSON.parse(stringTabJsonMotPoids);
 };
 
-setInterval(function () {
+//setInterval(function () {
     traitement.start();
-}, date.heure);
+//}, date.heure);
 

@@ -42,7 +42,6 @@ master.prototype = {
            ls.on ('message', function (m){
                _this.tabDonneeTmpSortie.push(m);
                console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-
                //console.log("C'est fini pour le child process "+_this.donnerCP.idCP);
                tmpCPNbr++;
                if(tmpCPNbr == _this.nombreCP){
