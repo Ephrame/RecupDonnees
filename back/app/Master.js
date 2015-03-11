@@ -41,23 +41,16 @@ master.prototype = {
 
            ls.on ('message', function (m){
                _this.tabDonneeTmpSortie.push(m);
-               console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                //console.log("C'est fini pour le child process "+_this.donnerCP.idCP);
                tmpCPNbr++;
                if(tmpCPNbr == _this.nombreCP){
-                   console.log(">>>>>>>>>>>>>>>>>>>>>>Je suis dans la condition<<<<<<<<<<<<<<<<<<<<<");
                    exports.ev.emit("FinMaster");
                }
-
             });
-
             ls.on('close', function (code) {
                 console.log('child process exited with code ' + code);
             });
-
-
         }
-
         ls.on('exit', function (code) {
             console.log('Child process exited with exit code '+code);
         });

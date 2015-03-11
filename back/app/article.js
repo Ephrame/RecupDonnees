@@ -43,6 +43,20 @@ exports.supprimerTout = function () {
     });
 
 };
+//-----------------------------------------------------------------------
+exports.sauvegarderOuMAJ = function (obj) {
+    var Trending = new modelTrending(obj);
+    Trending.save(function (err) {
+        if (err) {
+            //  console.log(err);
+            console.log("Enregistrement en Base Twitter non possible");
+        } else {
+            console.log("=================================== Enregistrement en Base Twitter ============================");
+        }
+
+    });
+
+};
 //------------------------------------------------------------------------
 exports.supprimer = function () {
     modelTrending.remove().where("date").gte(date.uneSemaine).exec(function (err) {

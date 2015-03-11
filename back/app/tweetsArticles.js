@@ -137,8 +137,8 @@ exports.miseAJour = function (obj)
 
 };
 
-var json = {};
-exports.trouverTout(function(json){console.log(json[0].nom)});
+//var json = {};
+//exports.trouverTout(function(json){console.log(json)});
 //renvoie un json plein avec pour chaque tweet un
 //exports.trouverToutsansCB();
 //exports.supprimerTout();

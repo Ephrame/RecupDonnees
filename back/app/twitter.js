@@ -2,14 +2,14 @@
 var mongoose = require('mongoose');//mongoose
 
 var connection = function () {
-   console.log("Je suis dans la base Twitter ======================================");
+  // console.log("Je suis dans la base Twitter ======================================");
     if (mongoose.connection.readyState == 0) {
         mongoose.connect('mongodb://localhost/twitter', function (err) {
             if (err) {
                 console.log(err);
             }
             else {
-                console.log("----------------Connexion à la Base Twitter -------------");
+               // console.log("----------------Connexion à la Base Twitter -------------");
             }
         });
     }
@@ -77,7 +77,19 @@ exports.sauvegarder = function (obj) {
     });
 
 };
+//-------------------------------------------------------------------------
+exports.sauvegarderOuMAJ = function (obj) {
+    var Trending = new modelTrending(obj);
+    Trending.update({"motsClefs": obj.motsClefs}, function (err) {
+        if (err) {
+            console.log("C'est pas bon");
+        } else {
+            console.log("------------------------------- Mise à jour de la base Twitter -------------------------");
+        }
 
+    });
+
+};
 
 //----------------------------------------------------------------------
 exports.miseAJour = function (obj) {
