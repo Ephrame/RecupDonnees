@@ -44,7 +44,7 @@ donnee.getTrends = function(){
             donnee.formater(JSON.parse(buffer));
         });
     });
-}
+};
 //------------------------------------------------------------------------------------
 donnee.formater = function(topics){
     var trends = [];

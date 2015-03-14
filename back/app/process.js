@@ -7,11 +7,13 @@ process.on('message', function(resp) {
 
    // var ev = new EventEmitter();
     //console.log(resp.donnees);
-    var donnee = resp.donnees;
+    var variable = resp.donnees;
     console.log("<<<<<<<<<<<<<<<<<<<    Creation du child process numero "+resp.idCP+"    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    resp.traitement = resp.traitement.replace(/@ARemplacer/g, "donnee");
-    //console.log(resp.traitement);
+    resp.traitement = resp.traitement.replace(/@ARemplacer/g, "variable");
+
     eval(resp.traitement);
+    //console.log(variable);
+
 
 });
 

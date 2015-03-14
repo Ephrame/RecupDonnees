@@ -49,9 +49,9 @@ exports.sauvegarderOuMAJ = function (obj) {
     Trending.save(function (err) {
         if (err) {
             //  console.log(err);
-            console.log("Enregistrement en Base Twitter non possible");
+            console.log("Enregistrement en Base Article non possible");
         } else {
-            console.log("=================================== Enregistrement en Base Twitter ============================");
+            console.log("=================================== Enregistrement en Base Article ============================");
         }
 
     });
@@ -139,8 +139,13 @@ exports.sauvegarder = function (obj) {
 
 };
 //console.log("------------Demarrage de la base articles-----------------------");
-//var json = {};
-//exports.trouverTout(function(json){console.log(json);});
+/*var json = {};
+exports.trouverTout(function(json){
+    for( i in json){
+        console.log(json[i].image);
+    }
+
+});*/
 //exports.supprimerTout();
 //-----------------------------------------------------------------------------------/**
 

@@ -40,6 +40,7 @@ master.prototype = {
             ls.send(_this.donnerCP);
 
            ls.on ('message', function (m){
+               //console.log("Je rentre combien de fois ? ");
                _this.tabDonneeTmpSortie.push(m);
                //console.log("C'est fini pour le child process "+_this.donnerCP.idCP);
                tmpCPNbr++;

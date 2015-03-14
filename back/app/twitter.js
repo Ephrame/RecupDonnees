@@ -80,15 +80,15 @@ exports.sauvegarder = function (obj) {
 //-------------------------------------------------------------------------
 exports.sauvegarderOuMAJ = function (obj) {
     var Trending = new modelTrending(obj);
-    Trending.update({"motsClefs": obj.motsClefs}, function (err) {
+    Trending.save(function (err) {
         if (err) {
-            console.log("C'est pas bon");
+            //  console.log(err);
+            console.log("Enregistrement en Base Twitter non possible");
         } else {
-            console.log("------------------------------- Mise à jour de la base Twitter -------------------------");
+            console.log("=================================== Enregistrement en Base Twitter ============================");
         }
 
     });
-
 };
 
 //----------------------------------------------------------------------
