@@ -155,16 +155,25 @@ LoadBalanceur.prototype = {
 
 
 */
+var tab = [];
+tab.push({code : "config"});
+tab.push({code : "R1T"});
+var config = demande.start(tab);
 
-var config = demande.start({code : "config"});
-var configu = demande.recuperation({code : "R1T"});
-var test = demande.recuperation({code : "R2T"});
+//var configu = demande.start({code : "R1T"});
+//var test = demande.start({code : "R2T"});
+
+//var test = demande.recuperation({code : "R2T"});
 //var config = demande.recupCode();
 
-setInterval(function () {
-    console.log(config);
-    console.log(configu);
-    console.log(test);
+//setInterval(function () {
+  //  if {}
+    demande.ev2.on("Return", function(tabReturn){
+        console.log(tabReturn);
+       // console.log(configu);
+       // console.log(test);
+    });
+
    // console.log(configu.data1);
-}, 1000);
+//}, 1000);
 //var LoadB = new LoadBalanceur(config);
