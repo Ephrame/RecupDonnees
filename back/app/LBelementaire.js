@@ -10,9 +10,8 @@ var db = require('./twitter');
 var master = require('./Master');
 var demande = require("./requettes");
 
-process.on('message', function(req) {
-    demande.recuperation({code : req});
-    var resp = demande.recupLBelem();
+process.on('message', function(resp) {
+    //console.log(resp[0].traitement.length);
     var LB = new LBelem(resp.traitement.length, resp);
     process.send("j'ai fait un Lb");
 
@@ -37,10 +36,10 @@ LBelem = function ( nbMaster,resp) {
     this.nbMaster = nbMaster;
     this.dbSortie = resp.dbSortie;
     this.dbEntree = resp.dbEntree;
-    for (k = 0; k < this.nbMaster; k++) {
-        this.tableauTraitement[k] = resp.traitement[k];
-        this.tabMasterP2[k] = master.creationMaster(resp.db, k, resp.traitement[k]);
-        console.log("<<<<<<<<<<<<<<<<<<<<<  Creation du Master numero "+k+  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    for (l = 0; l < this.nbMaster; l++) {
+        this.tableauTraitement[l] = resp.traitement[l];
+        this.tabMasterP2[l] = master.creationMaster(resp.db, l, resp.traitement[l]);
+        console.log("<<<<<<<<<<<<<<<<<<<<<  Creation du Master numero "+l+  "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     }
 
     this.initialisationDonneeProcess();

@@ -22,55 +22,54 @@ var demande = require("./requettes");
 var LBelem = require("./LBelementaire");
 var process = require('child_process');
 
-/*exports.recupCode = function (resp){
-    var config = JSON.parse(resp);
-    var LoadB = new LoadBalanceur(config);
-
-};*/
-
-
+recupCode = function (resp){
+    demande.ev3.on("Debut", function(data){
+        console.log(data);
+        var config = JSON.parse(data);
+        var LoadB = new LoadBalanceur(config);
+    });
+};
+tab = [];
+tab.push({code : "config"});
+var test = demande.start0(tab[0]);
+recupCode(test);
 
 LoadBalanceur = function(config)  {
 
     this.pileRecuperation= config.recuperation;
-    this.pileTraitements = config.traitement;
+    this.pileTraitements = [];
     this.frequence= config.frequence;
     this.LBelem = [];
     this.donneeCp = [];
     this.reponse = [];
+    this.tableau = [];
 
-   // this.programme();
-    this.lancementProgramme()
+    this.programme();
+    //this.lancementProgramme()
 };
 LoadBalanceur.prototype = {
 
     programme : function (){
-
+        var tableau = [];
+        var _this = this;
         for (k=0; k<this.pileRecuperation.length; k++){
-            var _this = this;
-            console.log(this.pileRecuperation[k]);
-            /*demande.recuperation({code : this.pileRecuperation[k]});
-            exports.recupLBelem = function (resp){
-                _this.reponse.push(resp);
-                console.log(_this.reponse);
-                console.log("_____________________________________________________");
-                if (k == (_this.pileRecuperation.length)-1){
-                    console.log("je vais faire cb");
-                    cb();
+            this.tableau.push({code : this.pileRecuperation[k]});
+
+        }
+        var i = 0;
+        demande.requette(this.tableau[0]);
+        demande.ev2.on("Bonjour", function(tabReturn){
+                _this.pileTraitements.push(tabReturn);
+                i++;
+                console.log(tabReturn);
+                if (i < _this.tableau.length){
+                    console.log("*************************** Je suis dans le if ****************");
+                    demande.requette(_this.tableau[i]);
+                }else{
+                    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>jai fini<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                     _this.lancementProgramme();
                 }
-                //LBelem.recupCode(resp, _this.frequence[k],""+k);
-
-            };
-*/
-            //pileRecuperation.on()
-        }
-
-        function cb(){
-            console.log(_this.reponse);
-           // _this.lancementProgramme()
-        }
-
-
+        });
     },
 
     lancementProgramme : function (){
@@ -80,12 +79,7 @@ LoadBalanceur.prototype = {
         for(var i=0; i<this.pileRecuperation.length; i++) {
 
             var ls = process.fork("./LBelementaire.js");
-            console.log(_this.pileRecuperation[i]);
-            this.donneeCp =_this.pileRecuperation[i];
-            //this.donnerCP.idCP=i;
-            console.log(_this.donneeCp);
-            //ls.send(_this.donneeCp);
-
+            ls.send(_this.pileTraitements[i]);
             ls.on ('message', function (m){
                 console.log(m);
             });
@@ -155,25 +149,4 @@ LoadBalanceur.prototype = {
 
 
 */
-var tab = [];
-tab.push({code : "config"});
-tab.push({code : "R1T"});
-var config = demande.start(tab);
 
-//var configu = demande.start({code : "R1T"});
-//var test = demande.start({code : "R2T"});
-
-//var test = demande.recuperation({code : "R2T"});
-//var config = demande.recupCode();
-
-//setInterval(function () {
-  //  if {}
-    demande.ev2.on("Return", function(tabReturn){
-        console.log(tabReturn);
-       // console.log(configu);
-       // console.log(test);
-    });
-
-   // console.log(configu.data1);
-//}, 1000);
-//var LoadB = new LoadBalanceur(config);
