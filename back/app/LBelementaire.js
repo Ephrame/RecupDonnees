@@ -4,23 +4,19 @@
 /**
  * Created by ameli_000 on 03/03/2015.
  */
-
+var EventEmitter = require('events').EventEmitter;
+exports.event = new EventEmitter();
 var fs = require('fs');
 var db = require('./twitter');
 var master = require('./Master');
 var demande = require("./requettes");
 
 process.on('message', function(resp) {
-    //console.log(resp[0].traitement.length);
     var LB = new LBelem(resp.traitement.length, resp);
-    process.send("j'ai fait un Lb");
-
-
 });
 
 exports.recupCode = function (resp, frequence, nom){
 
-    console.log("coucou");
     console.log(nom);
     var LB = new LBelem(resp.traitement.length, resp);
 
@@ -52,7 +48,6 @@ LBelem.prototype = {
         var _this = this;
         console.log(_this.dbEntree);
         if (_this.dbEntree != ""){
-            console.log("Sara est trop moche !!!!! ");
             var  dbEntree = require("./"+_this.dbEntree+".js");
 
             dbEntree.trouverTout(function (tmpJson) {
@@ -62,21 +57,26 @@ LBelem.prototype = {
                     tab[i] = tmpJson[i];
                 }
                 _this.tabMasterP2[0].tabDonneeTmp = tab;
+                if(_this.tabMasterP2[0].tabDonneeTmp.length > 0){
+                    cb();
+                }else{
+                    console.log("%%%%%%%%%%%%%%%% Mon tableau est vide !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                }
                 //tODO pensez à supprimer Twitter !
-                cb();
+
             });
             function cb() {
                 _this.gestionProcess();
             }
         }else{
             _this.tabMasterP2[0].tabDonneeTmp = ["vide"];
-            console.log("Amelie est incroyablement magnifique et intelligente !!! ");
             _this.gestionProcess();
         }
 
 
     },
     gestionProcess : function () {
+
         var _this = this;
         var numeroProcess = 0;
         this.tabMasterP2[0].creationCP();
@@ -89,11 +89,14 @@ LBelem.prototype = {
                 //console.log(_this.tabMasterP2[numeroProcess - 1].tabDonneeTmpSortie[0]);
                 for (tt in _this.tabMasterP2[numeroProcess - 1].tabDonneeTmpSortie) {
                     var dbSortie = require("./" + _this.dbSortie + ".js");
-
+                    //console.log(_this.tabMasterP2[numeroProcess - 1].tabDonneeTmpSortie[tt]);
+                    //console.log("*********************************************************");
                     dbSortie.sauvegarderOuMAJ(_this.tabMasterP2[numeroProcess - 1].tabDonneeTmpSortie[tt]);
                 }
+                console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
             }
         });
+
     }
 };
 

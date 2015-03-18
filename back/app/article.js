@@ -11,7 +11,7 @@ date.heure = date.aujourdui - 3600000;
 var connection = function () {
 
     if (mongoose.connection.readyState == 0) {
-        mongoose.connect('mongodb://127.0.0.1:27017/twitter', function (err) {
+        mongoose.connect('mongodb://127.0.0.1:27017/projet', function (err) {
             if (err) {
                 console.log(err);
             }
@@ -39,7 +39,7 @@ exports.supprimerTout = function () {
         if (err)
             console.log('Erreur ');
         else
-            console.log('Achete toi des lunettes !!!!!!!');
+            console.log('Achete toi des lunettes !!!!!!!    article');
     });
 
 };
@@ -142,7 +142,7 @@ exports.sauvegarder = function (obj) {
 /*var json = {};
 exports.trouverTout(function(json){
     for( i in json){
-        console.log(json[i].image);
+        console.log(json[i]);
     }
 
 });*/

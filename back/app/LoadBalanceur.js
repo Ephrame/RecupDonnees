@@ -22,6 +22,8 @@ var demande = require("./requettes");
 var LBelem = require("./LBelementaire");
 var process = require('child_process');
 
+
+
 recupCode = function (resp){
     demande.ev3.on("Debut", function(data){
         console.log(data);
@@ -32,12 +34,16 @@ recupCode = function (resp){
 tab = [];
 tab.push({code : "config"});
 var test = demande.start0(tab[0]);
-recupCode(test);
 
+
+
+
+recupCode(test);
 LoadBalanceur = function(config)  {
 
     this.pileRecuperation= config.recuperation;
-    this.pileTraitements = [];
+    this.pileTraitements = config.traitement;
+    this.pileReponse = [];
     this.frequence= config.frequence;
     this.LBelem = [];
     this.donneeCp = [];
@@ -59,27 +65,28 @@ LoadBalanceur.prototype = {
         var i = 0;
         demande.requette(this.tableau[0]);
         demande.ev2.on("Bonjour", function(tabReturn){
-                _this.pileTraitements.push(tabReturn);
+                _this.pileReponse.push(tabReturn);
                 i++;
-                console.log(tabReturn);
                 if (i < _this.tableau.length){
-                    console.log("*************************** Je suis dans le if ****************");
                     demande.requette(_this.tableau[i]);
                 }else{
-                    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>jai fini<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                      _this.lancementProgramme();
                 }
         });
+
+
     },
 
     lancementProgramme : function (){
+
         var _this = this;
+        var nbCP = 0;
         console.log("Creation du Master");
         this.nombreCP = this.pileRecuperation.length;
         for(var i=0; i<this.pileRecuperation.length; i++) {
 
             var ls = process.fork("./LBelementaire.js");
-            ls.send(_this.pileTraitements[i]);
+            ls.send(_this.pileReponse[i]);
             ls.on ('message', function (m){
                 console.log(m);
             });

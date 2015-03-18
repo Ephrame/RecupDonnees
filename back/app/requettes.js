@@ -68,7 +68,6 @@ var post = function(js) {
                 data = JSON.parse(data);
                 moi.data2= {};
                 moi.data2 = data;
-                console.log(moi.data2.dbEntree);
                 exports.ev2.emit("Bonjour",moi.data2);
 
             });

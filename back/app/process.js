@@ -10,7 +10,7 @@ process.on('message', function(resp) {
     var variable = resp.donnees;
     console.log("<<<<<<<<<<<<<<<<<<<    Creation du child process numero "+resp.idCP+"    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     resp.traitement = resp.traitement.replace(/@ARemplacer/g, "variable");
-
+    //console.log(variable);
     eval(resp.traitement);
     //console.log(variable);
 

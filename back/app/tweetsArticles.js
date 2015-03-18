@@ -6,7 +6,7 @@ var mongoose = require('mongoose');//mongoose
 var connection = function(){
 
     if(mongoose.connection.readyState == 0){
-        mongoose.connect('mongodb://127.0.0.1:27017/twitter', function(err) {
+        mongoose.connect('mongodb://127.0.0.1:27017/projet', function(err) {
             if (err) { console.log(err);}
             else
             {console.log("----------------connexion à la Base TweetsArticles-------------");}
@@ -94,28 +94,33 @@ exports.sauvegarderOuMAJ = function (obj)
 {
 
     var tweetsArt = new modelTweetsArticles(obj);
-    modelTweetsArticles.findOne({"nom": JSON.stringify(obj.nom)}).exec(function (err, rep) {
+   modelTweetsArticles.findOne({"nom": JSON.stringify(obj.nom)}).exec(function (err, rep) {
+
         if (err) {
             //console.log(err);
         } else if (rep){
-            tweetsArt.update({"tabArticles" : obj.tabArticles},function(err){
-                if (err) {
-                    console.log("Echec de la mise à jour de la base Tweets Articles");
-                }else{
-                    //TODO supprimer le tableau pour enregistrer le nouveau evitant ainsi les doublon en base
-                    console.log("-----------------------------Mise a jour de la base Tweets Articles ------------------------");
-                }
-            });
+            if(obj.tabArticles && obj.tabArticles.length > 0) {
+                tweetsArt.update({"tabArticles": obj.tabArticles}, function (err) {
+                    if (err) {
+                        console.log("Echec de la mise à jour de la base Tweets Articles");
+                    } else {
+                        //TODO supprimer le tableau pour enregistrer le nouveau evitant ainsi les doublon en base
+                        console.log("-----------------------------Mise a jour de la base Tweets Articles ------------------------");
+                    }
+                });
+            }
         } else {
-            tweetsArt.save(function(err){
-                if (err) {
-                   // console.log(err);
-                    console.log("Echec de l'enregistrement en Base Tweets Articles");
-                }else{
-                    console.log("************************** Enregistrement en Base Tweets Articles ************************************");
-                }
+            if(obj.tabArticles && obj.tabArticles.length > 0) {
+                tweetsArt.save(function (err) {
+                    if (err) {
+                        // console.log(err);
+                        console.log("Echec de l'enregistrement en Base Tweets Articles");
+                    } else {
+                        console.log("************************** Enregistrement en Base Tweets Articles ************************************");
+                    }
 
-            });
+                });
+            }
         }
     });
 };

@@ -4,7 +4,7 @@ var mongoose = require('mongoose');//mongoose
 var connection = function () {
   // console.log("Je suis dans la base Twitter ======================================");
     if (mongoose.connection.readyState == 0) {
-        mongoose.connect('mongodb://localhost/twitter', function (err) {
+        mongoose.connect('mongodb://localhost/projet', function (err) {
             if (err) {
                 console.log(err);
             }
@@ -79,16 +79,31 @@ exports.sauvegarder = function (obj) {
 };
 //-------------------------------------------------------------------------
 exports.sauvegarderOuMAJ = function (obj) {
-    var Trending = new modelTrending(obj);
-    Trending.save(function (err) {
-        if (err) {
-            //  console.log(err);
-            console.log("Enregistrement en Base Twitter non possible");
-        } else {
-            console.log("=================================== Enregistrement en Base Twitter ============================");
-        }
 
-    });
+    var Trending = new modelTrending(obj);
+    if(obj.motsClefs.length ==0){
+        if(obj.tweets){
+            Trending.save(function (err) {
+                if (err) {
+                    //  console.log(err);
+                    console.log("Enregistrement en Base Twitter non possible");
+                } else {
+                    console.log("=================================== Enregistrement en Base Twitter ============================");
+                }
+
+            });
+        }
+    }else{
+        Trending.update({"motsClefs": obj.motsClefs}, function (err) {
+            if (err) {
+                console.log("C'est pas bon");
+            } else {
+                console.log("------------------------------- Mise à jour de la base Twitter -------------------------");
+            }
+
+        });
+    }
+
 };
 
 //----------------------------------------------------------------------

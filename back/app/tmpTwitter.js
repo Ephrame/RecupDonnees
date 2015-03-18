@@ -9,7 +9,7 @@ var mongoose = require('mongoose');//mongoose
 var connection = function(){
 
     if(mongoose.connection.readyState == 0){
-        mongoose.connect('mongodb://127.0.0.1:27017/twitter', function(err) {
+        mongoose.connect('mongodb://127.0.0.1:27017/projet', function(err) {
             if (err) { console.log(err);}
             else
             {console.log("----------------connexion à la Base tmpTwitter-------------");}
@@ -40,7 +40,7 @@ exports.sauvegarderOuMAJ = function (obj) {
     var tmpTwitter = new modelTmpTwitter(obj);
     tmpTwitter.save(function (err) {
         if (err) {
-            //  console.log(err);
+            // console.log(err);
             console.log("Enregistrement en Base Tmp Twitter  non possible");
         } else {
             console.log("=================================== Enregistrement en Base Tmp Twitter============================");
@@ -54,7 +54,7 @@ exports.supprimerTout = function () {
         if (err)
             console.log('Erreur ');
         else
-            console.log('Achete toi des lunettes !!!!!!!');
+            console.log('Achete toi des lunettes !!!!!!!     tmpTwitter ');
     });
 
 };
@@ -85,9 +85,12 @@ exports.trouverTout = function(cb) // todo passer cb en arg pr une valeur de ret
             {
                 console.log("pas de reponse ! ");
             }else{
-                var tableau = rep[0].tab;
-                exports.supprimerTout();
-                cb(tableau);
+                if(rep.length > 0){
+                    var tableau = rep[0].tab;
+                    exports.supprimerTout();
+                    cb(tableau);
+                }
+
             }
         }
 
